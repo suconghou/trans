@@ -53,7 +53,6 @@
 
 			var handler=function(e)
 			{
-				aa=e.target;
 				if(closest(e.target,'.trans'))
 				{
 					return;
@@ -91,6 +90,7 @@
 			if(!d.body.trans)
 			{
 				d.body.on('dblclick',handler);
+				d.body.trans=1;
 			}
 		},
 		get:function(word,cb)
