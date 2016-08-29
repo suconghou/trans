@@ -78,9 +78,9 @@ class trans
 
 	private static function json($data,$json=false)
 	{
-		$expire=time()+7200;
+		$expire=time()+8640000;
 		header('Expires: '.gmdate('D, d M Y H:i:s',$expire).' GMT');
-		header('Cache-Control: public, max-age=7200');
+		header('Cache-Control: public, max-age=8640000');
 		header('Access-Control-Max-Age:3600',true);
 		header("Access-Control-Allow-Origin:*",true);
 		header('Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS',true);

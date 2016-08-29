@@ -1,58 +1,96 @@
-(function(w,$)
+(function(w)
 {
 	var url='http://media.suconghou.cn/trans.php?w=';
 	var cache={};
 	var container;
+	var d=document;
+
+	function closest(el, selector)
+	{
+		var matchesFn;
+		['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn)
+		{
+			if (typeof d.body[fn] == 'function')
+			{
+				matchesFn = fn;
+				return true;
+			}
+			return false;
+		});
+		var parent;
+		while (el)
+		{
+			parent = el.parentElement;
+			if (parent && parent[matchesFn](selector))
+			{
+				return parent;
+			}
+			el = parent;
+		}
+		return null;
+	}
+
 	var trans=
 	{
 		init:function()
 		{
 			var $this=this;
-			this.domInit();
-			$(document).on('dblclick',function(e)
+			container=d.querySelector('.trans');
+			if(!container)
 			{
-				if($(e.target).closest('.trans').length)
+				var style = ".trans{display:none;text-align:left;min-height:40px;min-width:75pt;position:absolute;max-width:5in;padding:10px 20px;line-height:1.7;box-shadow:0 0 5px #ddd;border-radius:5px;border:1px solid #b4cc83;background:#ebf4d8;margin-left:10px;margin-top:15px;font-family:lucida Grande,Verdana;font-size:9pt}.trans .tc_title{font-weight:700;font-size:1.2em}.trans .tc_type{color:#7a7a7a}";
+				var s=d.createElement('style');
+				s.innerHTML=style;
+				d.head.appendChild(s);
+
+				var v=d.createElement('div');
+				v.className='trans';
+				d.body.appendChild(v);
+				container=d.querySelector('.trans');
+			}
+			Element.prototype.on = Element.prototype.addEventListener;
+			Element.prototype.off = Element.prototype.removeEventListener;
+
+			var handler=function(e)
+			{
+				aa=e.target;
+				if(closest(e.target,'.trans'))
 				{
 					return;
 				}
 				var funhide=function(e)
 				{
-					if(!$(e.target).closest('.trans').length)
+					if(!closest(e.target,'.trans'))
 					{
-						container.hide();
-						$(document).off('click',funhide);
+						container.style.display='none';
+						d.body.off('click',funhide);
 					}
 				};
 				var text='';
-				if(document.selection&&document.selection.createRange)
+				if(d.selection&&d.selection.createRange)
 				{
-					text=document.selection.createRange().text;
+					text=d.selection.createRange().text;
 				}
 				else
 				{
-					var obj=window.getSelection();
+					var obj=w.getSelection();
 					text=obj.toString();
-					if(/^[a-zA-Z]{2,30}$/.test(text))
-					{
-						$this.get(text.toLowerCase(),function(html)
-						{
-							container.html(html).css({'top':e.pageY,'left':e.pageX}).show();
-							$(document).off('click',funhide).on('click',funhide);
-						});
-					}
 				}
-			});
-
-		},
-		domInit:function()
-		{
-			container=$('.trans');
-			if(!container.length)
+				if(/^[a-zA-Z]{2,30}$/.test(text))
+				{
+					$this.get(text.toLowerCase(),function(html)
+					{
+						container.innerHTML=html;
+						container.style.top=e.pageY+'px';
+						container.style.left=e.pageX+'px';
+						container.style.display='block';
+						d.body.on('click',funhide);
+					});
+				}
+			};
+			if(!d.body.trans)
 			{
-				var style = "<style>.trans{display:none;min-height:40px;min-width:75pt;position:absolute;max-width:5in;padding:10px 20px;line-height:1.7;box-shadow:0 0 5px #ddd;border-radius:5px;border:1px solid #b4cc83;background:#ebf4d8;margin-left:10px;margin-top:15px;font-family:lucida Grande,Verdana;font-size:9pt}.trans .tc_title{font-weight:700;font-size:1.2em}.trans .tc_type{color:#7a7a7a}</style>";
-				$(style).appendTo(document.head);
-				$('body').append('<div class="trans"></div>');
-				container=$('.trans');
+				d.body.on('dblclick',handler);
 			}
 		},
 		get:function(word,cb)
@@ -66,17 +104,22 @@
 				{
 					cb(tpl,data);
 				}
-				else
-				{
-					console.log(data);
-				}
 			};
-			//do cache
 			if(cache[word])
 			{
 				return callback(cache[word]);
 			}
-			$.getJSON(url+word,callback);
+			this.getJSON(url+word,callback);
+		},
+		getJSON:function(url,callback)
+		{
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", url);
+			xhr.onload = function ()
+			{
+			　　callback(JSON.parse(xhr.response));
+			};
+			xhr.send();
 		},
 		genHtml:function(ret)
 		{
@@ -103,4 +146,4 @@
 
 	trans.init();
 
-})(window,jQuery);
+})(window);
