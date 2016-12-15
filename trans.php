@@ -13,7 +13,7 @@ class trans
 	static function index()
 	{
 		$word=isset($_GET['w'])?strtolower(trim(strip_tags($_GET['w']))):null;
-		if(preg_match('/[a-zA-Z]{2,30}/',$word))
+		if(preg_match('/^[a-zA-Z]{2,30}$/',$word))
 		{
 			$data=self::fetch($word);
 			return self::json($data);
