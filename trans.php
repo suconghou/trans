@@ -95,6 +95,7 @@ class trans
 		header("Access-Control-Allow-Origin:*", true);
 		header('Access-Control-Allow-Methods:GET, POST, PUT, DELETE, OPTIONS', true);
 		header('Access-Control-Allow-Headers:Origin, X-Requested-With, Content-Type, Accept', true);
+		header('Content-Type: application/json', true);
 		exit($jsonStr ? $data : json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	}
 }
