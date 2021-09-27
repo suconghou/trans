@@ -1,6 +1,6 @@
 (function(w)
 {
-	var url='http://media.suconghou.cn/trans.php?w=';
+	var url='https://r.suconghou.cn/trans.php?w=';
 	var cache={};
 	var container;
 	var d=document;
@@ -38,7 +38,7 @@
 			container=d.querySelector('.trans');
 			if(!container)
 			{
-				var style = ".trans{display:none;text-align:left;min-height:40px;min-width:75pt;position:absolute;max-width:5in;padding:10px 20px;line-height:1.7;box-shadow:0 0 5px #ddd;border-radius:5px;border:1px solid #b4cc83;background:#ebf4d8;margin-left:10px;margin-top:15px;font-family:lucida Grande,Verdana;font-size:9pt}.trans .tc_title{font-weight:700;font-size:1.2em}.trans .tc_type{color:#7a7a7a}";
+				var style = ".trans{display:none;text-align:left;min-height:40px;min-width:75pt;position:absolute;max-width:5in;padding:10px 20px;line-height:1.7;box-shadow:0 0 5px #ddd;border-radius:5px;border:1px solid #b4cc83;background:#ebf4d8;margin-left:10px;margin-top:15px;font-family:lucida Grande,Verdana;font-size:9pt;color:#111;}.trans .tc_title{font-weight:700;font-size:1.2em}.trans .tc_type{color:#7a7a7a}";
 				var s=d.createElement('style');
 				s.innerHTML=style;
 				d.head.appendChild(s);
