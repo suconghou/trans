@@ -73,7 +73,7 @@ class trans
 		return $data;
 	}
 
-	private static function http(string $uri, int $timeout = 8, array|string $data = null, array $head = []): array
+	private static function http(string $uri, int $timeout = 8, array|string|null $data = null, array $head = []): array
 	{
 		$ch = curl_init($uri);
 		curl_setopt_array($ch, [CURLOPT_HTTPHEADER => array_merge(static::$headers, $head), CURLOPT_FOLLOWLOCATION => 1, CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0, CURLOPT_RETURNTRANSFER => 1, CURLOPT_TIMEOUT => $timeout, CURLOPT_CONNECTTIMEOUT => $timeout] + (is_null($data) ? [] : [CURLOPT_POST => 1, CURLOPT_POSTFIELDS => $data]));
